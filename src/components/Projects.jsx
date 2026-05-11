@@ -34,9 +34,11 @@ const PROJECTS = [
     stack: ["ASP.NET Core", "C#", "Angular TS", "MSSQL"],
     ctas: [{ label: "Case study", icon: "doc", href: "#" }],
     slides: [
-      { kind: "schedule", caption: "Production schedule · weekly view" },
-      { kind: "bom", caption: "Bill of materials editor" },
-      { kind: "report", caption: "Shop-floor reporting" },
+      { kind: "job-order", caption: "Job orders · to be made" },
+      { kind: "stocking-order", caption: "Stocking orders · inventory replenishment" },
+      { kind: "production-order", caption: "Production orders · to be manufactured" },
+      { kind: "bom", caption: "Bill of materials · production detail" },
+      { kind: "inventory", caption: "Warehouse inventory · stock levels" },
     ],
   },
   {
@@ -50,9 +52,9 @@ const PROJECTS = [
     stack: ["C#", "ASP.NET Core", "MSSQL"],
     ctas: [{ label: "Case study", icon: "doc", href: "#" }],
     slides: [
-      { kind: "modules", caption: "Module dependency map" },
-      { kind: "settings", caption: "Per-module configuration" },
-      { kind: "audit", caption: "Cross-module audit log" },
+      { kind: "erp-purchasing", caption: "Purchasing module · PR approval workflow" },
+      { kind: "erp-sales-order", caption: "Sales order module · order fulfillment" },
+      { kind: "erp-inventory", caption: "Inventory module · warehouse stock overview" },
     ],
   },
   {
@@ -69,25 +71,6 @@ const PROJECTS = [
       { kind: "intake", caption: "Application intake form" },
       { kind: "queue", caption: "Reviewer queue" },
       { kind: "status", caption: "Broker status dashboard" },
-    ],
-  },
-  {
-    id: "kpi",
-    name: "Sales KPI Dashboard",
-    short: "Analytics · Real-time",
-    title: "A live KPI board the sales team actually checks.",
-    desc: "An analytics surface on top of the CRM data: targets, attainment, win rate, cycle time, and rep leaderboard. Refreshes in seconds, with drill-down from any metric back to the deals behind it.",
-    role: "Full-stack Developer",
-    timeline: "2026",
-    stack: ["React Vite", "TypeScript", "ASP.NET Core", "MSSQL"],
-    ctas: [
-      { label: "Live demo", icon: "ext", href: "#" },
-      { label: "Case study", icon: "doc", href: "#" },
-    ],
-    slides: [
-      { kind: "kpi", caption: "Top-level KPI board" },
-      { kind: "leaderboard", caption: "Rep leaderboard" },
-      { kind: "drilldown", caption: "Deal drill-down" },
     ],
   },
   {
@@ -166,7 +149,7 @@ export default function Projects() {
             </div>
           </aside>
 
-          <div className="proj-stage reveal" key={project.id}>
+          <div className="proj-stage reveal">
             <div className="proj-info">
               <div className="proj-num">
                 PROJECT · {String(active + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}

@@ -831,7 +831,6 @@ body[data-mode="light"] .proj-rail-track {
   color: var(--text-2);
   font: inherit;
   cursor: pointer;
-  transition: color .25s ease, transform .25s ease;
 }
 .proj-rail-item:hover { color: var(--text-0); }
 .proj-rail-item.active { color: var(--text-0); }
@@ -891,15 +890,10 @@ body[data-mode="light"] .proj-rail-track {
 .proj-rail-arrow {
   color: var(--text-3);
   display: inline-flex;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity .25s, transform .25s, color .25s;
   flex-shrink: 0;
 }
 .proj-rail-item:hover .proj-rail-arrow,
 .proj-rail-item.active .proj-rail-arrow {
-  opacity: 1;
-  transform: translateX(0);
   color: var(--accent-1);
 }
 
