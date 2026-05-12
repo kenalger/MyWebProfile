@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import Nav from "./components/Nav.jsx";
 import Hero from "./components/Hero.jsx";
-import Work from "./components/Work.jsx";
-import Projects from "./components/Projects.jsx";
-import Skills from "./components/Skills.jsx";
-import Contact from "./components/Contact.jsx";
 import MarqueeStrip from "./components/MarqueeStrip.jsx";
 import Footer from "./components/Footer.jsx";
 import TweaksPanel from "./components/TweaksPanel.jsx";
+
+const Work = lazy(() => import("./components/Work.jsx"));
+const Projects = lazy(() => import("./components/Projects.jsx"));
+const Skills = lazy(() => import("./components/Skills.jsx"));
+const Contact = lazy(() => import("./components/Contact.jsx"));
 import { useTweaks } from "./hooks/useTweaks.js";
 import { useReveal } from "./hooks/useReveal.js";
 import { useMagnetic } from "./hooks/useMagnetic.js";
@@ -44,13 +45,23 @@ export default function App() {
       <main>
         <Hero />
         <MarqueeStrip />
-        <Work />
-        <Projects />
-        <Skills />
-        <Contact />
+        <Suspense fallback={<SectionFallback />}>
+          <Work />
+          <Projects />
+          <Skills />
+          <Contact />
+        </Suspense>
       </main>
       <Footer />
       <TweaksPanel t={t} setTweak={setTweak} />
     </>
+  );
+}
+
+function SectionFallback() {
+  return (
+    <div className="section-fallback" aria-hidden="true">
+      <div className="section-fallback-inner" />
+    </div>
   );
 }

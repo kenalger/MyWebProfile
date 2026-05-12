@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { PlaceholderUI } from "./PlaceholderUI.jsx";
+import salonLogin from "../assets/salon image.png";
+import salonAppointments from "../assets/armansalon.png";
+
+const OWNER_EMAIL = "algerdegdimaymay@gmail.com";
 
 const PROJECTS = [
   {
@@ -7,15 +12,11 @@ const PROJECTS = [
     name: "CRM System",
     short: "Sales pipeline · Web + Mobile",
     title: "An end-to-end CRM platform built from scratch.",
-    desc: "Founding developer for MyVan's CRM. Modeled the lead → opportunity → deal pipeline, designed an offline-first React Native companion for the field team, and tied it back into the existing ERP so reps and ops see the same numbers.",
+    desc: "Founding developer for Myvan Holdings INC's CRM. Modeled the lead → opportunity → deal pipeline, designed an offline-first React Native companion for the field team, and tied it back into the existing ERP so reps and ops see the same numbers.",
     role: "Founding Developer",
-    timeline: "2026 — Present",
+    timeline: "2025 — 2026",
     stack: ["React Vite", "React Native", "ASP.NET Core", "MSSQL", "Supabase"],
-    ctas: [
-      { label: "Live demo", icon: "ext", href: "#" },
-      { label: "GitHub", icon: "gh", href: "#" },
-      { label: "Case study", icon: "doc", href: "#" },
-    ],
+    privateApp: true,
     slides: [
       { kind: "dashboard", caption: "CRM dashboard · pipeline overview" },
       { kind: "kanban", caption: "Deal pipeline · drag-and-drop stages" },
@@ -32,7 +33,7 @@ const PROJECTS = [
     role: "Lead Developer",
     timeline: "2025 — 2026",
     stack: ["ASP.NET Core", "C#", "Angular TS", "MSSQL"],
-    ctas: [{ label: "Case study", icon: "doc", href: "#" }],
+    privateApp: true,
     slides: [
       { kind: "job-order", caption: "Job orders · to be made" },
       { kind: "stocking-order", caption: "Stocking orders · inventory replenishment" },
@@ -50,7 +51,7 @@ const PROJECTS = [
     role: "Module Developer",
     timeline: "2025",
     stack: ["C#", "ASP.NET Core", "MSSQL"],
-    ctas: [{ label: "Case study", icon: "doc", href: "#" }],
+    privateApp: true,
     slides: [
       { kind: "erp-purchasing", caption: "Purchasing module · PR approval workflow" },
       { kind: "erp-sales-order", caption: "Sales order module · order fulfillment" },
@@ -66,7 +67,7 @@ const PROJECTS = [
     role: "Full-stack Developer",
     timeline: "2025",
     stack: ["Angular TS", "ASP.NET Core", "MSSQL"],
-    ctas: [{ label: "Case study", icon: "doc", href: "#" }],
+    privateApp: true,
     slides: [
       { kind: "intake", caption: "Application intake form" },
       { kind: "queue", caption: "Reviewer queue" },
@@ -79,26 +80,24 @@ const PROJECTS = [
     short: "Personal project · Bookings + POS",
     personal: true,
     title: "A salon platform that handles the day, end-to-end.",
-    desc: "A personal project I built from scratch — a salon management system covering online bookings, the appointment calendar, service catalog, staff schedules, walk-in queue, point-of-sale and daily reporting. Designed it the way I'd want to use it if I were running the front desk: zero double-bookings, every receipt traceable, and the next free stylist always one tap away.",
+    desc: "A personal project I built from scratch — a salon management system covering online bookings, the appointment calendar, service catalog, staff schedules, walk-in queue, point-of-sale and daily reporting. Designed it the way I'd want to use it if I were running the front desk: zero double-bookings, every receipt traceable, and the next free stylist always one tap away. The platform is available for licensing or acquisition — get in touch to schedule a tailored walkthrough.",
     role: "Solo Developer (Design + Frontend + Backend)",
     timeline: "2026 · Personal",
-    stack: ["React Vite", "TypeScript", "Supabase", "Tailwind"],
+    stack: ["React Vite", "TypeScript", "Supabase", "Tailwind", "ASP.NET Core"],
     ctas: [
-      { label: "Live demo", icon: "ext", href: "#" },
-      { label: "GitHub", icon: "gh", href: "#" },
+      { label: "Request live demo", icon: "ext", action: "request-demo" },
+      { label: "GitHub", icon: "gh", href: "https://github.com/kenalger/SalonManagementSystem" },
     ],
     slides: [
-      { kind: "booking-cal", caption: "Appointment calendar · weekly view" },
-      { kind: "services", caption: "Service catalog & pricing" },
-      { kind: "queue", caption: "Walk-in queue" },
-      { kind: "pos", caption: "Point-of-sale & receipt" },
-      { kind: "kpi", caption: "Daily reporting" },
+      { image: salonLogin, caption: "Landing & sign-in · Elevate Your Salon Experience" },
+      { image: salonAppointments, caption: "Appointments · daily schedule & KPIs" },
     ],
   },
 ];
 
 export default function Projects() {
   const [active, setActive] = useState(0);
+  const [demoRequest, setDemoRequest] = useState(null);
   const project = PROJECTS[active];
 
   return (
@@ -199,19 +198,38 @@ export default function Projects() {
               </div>
 
               <div className="proj-ctas">
-                {project.ctas.map((c, i) => (
-                  <a
-                    key={i}
-                    href={c.href}
-                    className={`btn ${i === 0 ? "btn-primary" : "btn-ghost"}`}
-                    data-magnetic
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <CtaIcon kind={c.icon} />
-                    {c.label}
-                    <span className="arrow">→</span>
-                  </a>
-                ))}
+                {project.privateApp ? (
+                  <span className="proj-private" aria-label="Private application">
+                    <CtaIcon kind="lock" />
+                    Private application
+                  </span>
+                ) : (
+                  project.ctas?.map((c, i) => {
+                    const isExternal = c.href && /^https?:\/\//.test(c.href);
+                    return (
+                      <a
+                        key={i}
+                        href={c.href || "#"}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                        className={`btn ${i === 0 ? "btn-primary" : "btn-ghost"}`}
+                        data-magnetic
+                        onClick={(e) => {
+                          if (c.action === "request-demo") {
+                            e.preventDefault();
+                            setDemoRequest({ project: project.name });
+                          } else if (!isExternal) {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
+                        <CtaIcon kind={c.icon} />
+                        {c.label}
+                        <span className="arrow">→</span>
+                      </a>
+                    );
+                  })
+                )}
               </div>
             </div>
 
@@ -221,11 +239,156 @@ export default function Projects() {
           </div>
         </div>
       </div>
+
+      {demoRequest && (
+        <DemoRequestModal
+          projectName={demoRequest.project}
+          onClose={() => setDemoRequest(null)}
+        />
+      )}
     </section>
   );
 }
 
+function DemoRequestModal({ projectName, onClose }) {
+  const [email, setEmail] = useState("");
+  const [note, setNote] = useState("");
+  const [touched, setTouched] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose]);
+
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setTouched(true);
+    if (!valid) return;
+    const subject = encodeURIComponent(`Live demo request — ${projectName}`);
+    const body = encodeURIComponent(
+      `Hi Ken,\n\nI'd like to request a live demo of ${projectName}.\n\nMy email: ${email}\n${note ? `\nNotes:\n${note}\n` : ""}\nThanks.`
+    );
+    window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+    onClose();
+  };
+
+  return (
+    <div className="demo-modal-backdrop" onMouseDown={onClose}>
+      <div
+        className="demo-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-modal-title"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <button className="demo-modal-close" onClick={onClose} aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 3l10 10M13 3 3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </button>
+        <div className="demo-modal-eyebrow">Live demo · {projectName}</div>
+        <h3 id="demo-modal-title" className="demo-modal-title">Request a guided walkthrough</h3>
+        <p className="demo-modal-lead">
+          Leave your email and I'll get back to you with a scheduled live demo,
+          along with licensing and acquisition details.
+        </p>
+        <form onSubmit={onSubmit} className="demo-modal-form" noValidate>
+          <label className="demo-modal-label" htmlFor="demo-email">Your email</label>
+          <input
+            id="demo-email"
+            ref={inputRef}
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@company.com"
+            className="demo-modal-input"
+            aria-invalid={touched && !valid}
+          />
+          {touched && !valid && (
+            <span className="demo-modal-error">Please enter a valid email.</span>
+          )}
+
+          <label className="demo-modal-label" htmlFor="demo-note">Anything I should know? (optional)</label>
+          <textarea
+            id="demo-note"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="Use case, preferred time, team size…"
+            rows={3}
+            className="demo-modal-input"
+          />
+
+          <div className="demo-modal-actions">
+            <button type="button" className="btn btn-ghost" onClick={onClose}>
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Send request
+              <span className="arrow">→</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function SlideImage({ src, caption, eager, onOpen }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="slide-image">
+      {!loaded && <div className="slide-skeleton" aria-hidden="true" />}
+      <img
+        src={src}
+        alt={caption || ""}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        fetchpriority={eager ? "high" : "auto"}
+        onLoad={() => setLoaded(true)}
+        onClick={onOpen}
+        className={`${loaded ? "is-loaded" : "is-loading"} ${onOpen ? "is-zoomable" : ""}`}
+      />
+      {caption && <div className="slide-image-caption">{caption}</div>}
+    </div>
+  );
+}
+
+function ThumbImage({ src }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <>
+      {!loaded && <div className="thumb-skeleton" aria-hidden="true" />}
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        className={`carousel-thumb-img ${loaded ? "is-loaded" : "is-loading"}`}
+      />
+    </>
+  );
+}
+
 function CtaIcon({ kind }) {
+  if (kind === "lock")
+    return (
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="3" y="7" width="10" height="7" rx="1.2" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    );
   if (kind === "gh")
     return (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
@@ -249,6 +412,8 @@ function Carousel({ project }) {
   const slides = project.slides;
   const [idx, setIdx] = useState(0);
   const [drag, setDrag] = useState({ active: false, startX: 0, dx: 0 });
+  const [lightboxIdx, setLightboxIdx] = useState(null);
+  const draggedRef = useRef(false);
   const trackRef = useRef(null);
 
   useEffect(() => {
@@ -259,6 +424,7 @@ function Carousel({ project }) {
 
   const onDown = (e) => {
     const x = e.touches ? e.touches[0].clientX : e.clientX;
+    draggedRef.current = false;
     setDrag({ active: true, startX: x, dx: 0 });
   };
 
@@ -266,6 +432,8 @@ function Carousel({ project }) {
     if (!drag.active) return;
     const onMove = (e) => {
       const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const dx = x - drag.startX;
+      if (Math.abs(dx) > 5) draggedRef.current = true;
       setDrag((d) => ({ ...d, dx: x - d.startX }));
     };
     const onUp = () => {
@@ -318,7 +486,19 @@ function Carousel({ project }) {
         >
           {slides.map((s, i) => (
             <div key={i} className="carousel-slide">
-              <PlaceholderUI kind={s.kind} caption={s.caption} />
+              {s.image ? (
+                <SlideImage
+                  src={s.image}
+                  caption={s.caption}
+                  eager={i === 0}
+                  onOpen={() => {
+                    if (draggedRef.current) return;
+                    setLightboxIdx(i);
+                  }}
+                />
+              ) : (
+                <PlaceholderUI kind={s.kind} caption={s.caption} />
+              )}
             </div>
           ))}
         </div>
@@ -356,10 +536,89 @@ function Carousel({ project }) {
             onClick={() => go(i)}
             aria-label={`Slide ${i + 1}`}
           >
-            <PlaceholderUI kind={s.kind} compact />
+            {s.image ? (
+              <ThumbImage src={s.image} />
+            ) : (
+              <PlaceholderUI kind={s.kind} compact />
+            )}
           </button>
         ))}
       </div>
+
+      {lightboxIdx !== null && slides[lightboxIdx]?.image && (
+        <Lightbox
+          slides={slides.filter((s) => s.image)}
+          startIdx={slides.filter((s) => s.image).findIndex((s) => s === slides[lightboxIdx])}
+          onClose={() => setLightboxIdx(null)}
+        />
+      )}
     </div>
+  );
+}
+
+function Lightbox({ slides, startIdx, onClose }) {
+  const [i, setI] = useState(startIdx);
+  const total = slides.length;
+  const go = (n) => setI((prev) => (n + total) % total);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft") go(i - 1);
+      else if (e.key === "ArrowRight") go(i + 1);
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [i, onClose]);
+
+  const s = slides[i];
+
+  return createPortal(
+    <div className="lightbox" onClick={onClose} role="dialog" aria-modal="true">
+      <button className="lightbox-close" onClick={onClose} aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+          <path d="M3 3l10 10M13 3 3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      </button>
+      {total > 1 && (
+        <>
+          <button
+            className="lightbox-arrow lightbox-arrow-prev"
+            onClick={(e) => { e.stopPropagation(); go(i - 1); }}
+            aria-label="Previous image"
+          >
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button
+            className="lightbox-arrow lightbox-arrow-next"
+            onClick={(e) => { e.stopPropagation(); go(i + 1); }}
+            aria-label="Next image"
+          >
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </>
+      )}
+      <div className="lightbox-stage" onClick={(e) => e.stopPropagation()}>
+        <img src={s.image} alt={s.caption || ""} className="lightbox-img" />
+        <div className="lightbox-meta">
+          {s.caption && <span className="lightbox-caption">{s.caption}</span>}
+          {total > 1 && (
+            <span className="lightbox-counter">
+              {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 }
