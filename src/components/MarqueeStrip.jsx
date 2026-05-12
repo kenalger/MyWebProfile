@@ -3,7 +3,7 @@ const MARQUEE_ITEMS = [
   "CRM Platform",
   "Manufacturing",
   "Realty Accreditation",
-  "Sales KPI Dashboard",
+  "Sales Operation",
   "Web · Mobile",
   "Internal Tools",
 ];
