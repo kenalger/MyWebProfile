@@ -12,7 +12,20 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [pill, setPill] = useState({ left: 0, width: 0, opacity: 0 });
   const [mode, setMode] = useState(() => document.body.dataset.mode || "dark");
+  const [menuOpen, setMenuOpen] = useState(false);
   const linksRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const onMode = (e) => setMode(e.detail || document.body.dataset.mode || "dark");
@@ -63,6 +76,7 @@ export default function Nav() {
     e.preventDefault();
     const el = document.getElementById(id);
     if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    setMenuOpen(false);
   };
 
   return (
@@ -127,16 +141,51 @@ export default function Nav() {
             Let's talk
           </a>
         </div>
-        <button className="nav-burger" aria-label="Menu" onClick={(e) => scrollTo(e, "contact")}>
+        <button
+          className={`nav-burger ${menuOpen ? "is-open" : ""}`}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
+        >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M2 4h12M2 8h12M2 12h12"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-            />
+            {menuOpen ? (
+              <path d="M3 3l10 10M13 3 3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            ) : (
+              <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            )}
           </svg>
         </button>
+      </div>
+
+      <div
+        className={`nav-drawer ${menuOpen ? "is-open" : ""}`}
+        aria-hidden={!menuOpen}
+        onClick={() => setMenuOpen(false)}
+      >
+        <div className="nav-drawer-panel" onClick={(e) => e.stopPropagation()}>
+          <ul className="nav-drawer-links">
+            {NAV_ITEMS.map((n) => (
+              <li key={n.id}>
+                <a
+                  href={`#${n.id}`}
+                  className={`nav-drawer-link ${active === n.id ? "active" : ""}`}
+                  onClick={(e) => scrollTo(e, n.id)}
+                >
+                  {n.label}
+                  <span className="arrow">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            href="#contact"
+            className="btn btn-primary nav-drawer-cta"
+            onClick={(e) => scrollTo(e, "contact")}
+          >
+            Let's talk
+            <span className="arrow">→</span>
+          </a>
+        </div>
       </div>
     </nav>
   );
