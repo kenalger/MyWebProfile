@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from "react";
 
 const PANEL_STYLE = `
   .twk-fab{position:fixed;right:18px;bottom:18px;z-index:2147483645;
-    width:42px;height:42px;border-radius:999px;border:1px solid var(--line-strong);
-    background:rgba(12,14,19,0.78);color:var(--text-0);
+    width:42px;height:42px;border-radius:999px;border:1px solid var(--line);
+    background:color-mix(in srgb, var(--paper) 82%, transparent);color:var(--ink);
     backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 28px rgba(0,0,0,.25);cursor:pointer;
+    box-shadow:0 8px 28px rgba(0,0,0,.18);cursor:pointer;
     transition:transform .2s ease, background .25s, border-color .25s}
-  .twk-fab:hover{transform:translateY(-2px);border-color:var(--accent-line)}
-  body[data-mode="light"] .twk-fab{
-    background:rgba(255,255,255,0.82);border-color:rgba(38,30,18,0.12);
-    color:var(--text-0);box-shadow:0 8px 28px rgba(38,30,18,.12)}
+  .twk-fab:hover{transform:translateY(-2px);border-color:var(--accent)}
   .twk-panel{position:fixed;right:18px;bottom:70px;z-index:2147483646;width:280px;
     max-height:calc(100vh - 100px);display:flex;flex-direction:column;
     background:rgba(250,249,247,.82);color:#29261b;
@@ -103,8 +100,8 @@ export default function TweaksPanel({ t, setTweak }) {
               label="Appearance"
               value={t.mode}
               options={[
-                { value: "dark", label: "Dark" },
-                { value: "light", label: "Light" },
+                { value: "paper", label: "Paper" },
+                { value: "slate", label: "Slate" },
               ]}
               onChange={(v) => setTweak("mode", v)}
             />
@@ -113,29 +110,13 @@ export default function TweaksPanel({ t, setTweak }) {
               label="Theme"
               value={t.accent}
               options={[
-                { value: "blue-cyan", label: "Blue · Cyan" },
-                { value: "lavender", label: "Lavender" },
+                { value: "forest", label: "Forest" },
+                { value: "rust", label: "Rust" },
                 { value: "indigo", label: "Indigo" },
-                { value: "rose", label: "Rose" },
-                { value: "warm", label: "Warm · Terracotta" },
+                { value: "ink", label: "Ink" },
               ]}
               onChange={(v) => setTweak("accent", v)}
             />
-            {t.mode !== "light" && (
-              <>
-                <TweakSection label="Background tone" />
-                <TweakRadio
-                  label="Tone"
-                  value={t.bg}
-                  options={[
-                    { value: "charcoal", label: "Charcoal" },
-                    { value: "slate", label: "Slate" },
-                    { value: "near-black", label: "Near black" },
-                  ]}
-                  onChange={(v) => setTweak("bg", v)}
-                />
-              </>
-            )}
           </div>
         </div>
       )}
