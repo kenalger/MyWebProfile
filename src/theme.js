@@ -1,13 +1,19 @@
-// Accent palette — matches the imported design's Theme props.
+// Accent palette + theme — mirrors the imported design's Theme props.
 export const ACCENTS = {
-  forest: "#2c4a3e",
-  rust: "#8a3324",
-  indigo: "#2b3a67",
-  ink: "#1a1916",
+  blue: "#0a5bff",
+  red: "#ff3b30",
+  ink: "#0a0a0a",
+  green: "#1f5c3d",
 };
 
 export function applyTheme(t) {
-  const accent = ACCENTS[t.accent] || ACCENTS.forest;
-  document.documentElement.style.setProperty("--accent", accent);
-  document.body.dataset.mode = t.mode === "slate" ? "slate" : "paper";
+  const root = document.documentElement;
+  const accent = ACCENTS[t.accent] || ACCENTS.blue;
+  root.dataset.theme = t.mode === "dark" ? "dark" : "light";
+  // In dark mode the "ink" accent would vanish against the near-black bg,
+  // so fall back to a readable tint.
+  root.style.setProperty(
+    "--accent",
+    t.mode === "dark" && t.accent === "ink" ? "#f5f5f5" : accent
+  );
 }

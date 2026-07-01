@@ -12,30 +12,21 @@ import { useReveal } from "./hooks/useReveal.js";
 import { applyTheme } from "./theme.js";
 
 const TWEAK_DEFAULTS = {
-  mode: "paper",
-  accent: "forest",
+  mode: "light",
+  accent: "blue",
 };
 
 export default function App() {
-  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS, "mywebprofile:tweaks:v2");
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS, "mywebprofile:tweaks:v3");
 
   useEffect(() => {
     applyTheme(t);
-    window.dispatchEvent(new CustomEvent("modechange", { detail: t.mode }));
-  }, [t.accent, t.mode]);
-
-  useEffect(() => {
-    window.__setMode = (m) => setTweak("mode", m);
-    return () => {
-      delete window.__setMode;
-    };
-  }, [setTweak]);
+  }, [t.mode, t.accent]);
 
   useReveal();
 
   return (
-    <>
-      <div className="grain" />
+    <div className="page">
       <Nav />
       <main>
         <Hero />
@@ -46,6 +37,6 @@ export default function App() {
       </main>
       <Footer />
       <TweaksPanel t={t} setTweak={setTweak} />
-    </>
+    </div>
   );
 }

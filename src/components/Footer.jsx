@@ -1,14 +1,8 @@
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <span>© {new Date().getFullYear()} Ken Alger Dimaymay</span>
-      <a
-        href="#top"
-        onClick={(e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-      >
+      <span>© 2026 ken_alger_dimaymay</span>
+      <a href="#top" className="ul">
         Back to top ↑
       </a>
     </footer>

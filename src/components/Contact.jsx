@@ -1,46 +1,35 @@
 export default function Contact() {
   return (
-    <section id="contact" className="section contact">
-      <div className="section-inner">
-        <p className="contact-lead reveal">Have a system that needs building?</p>
-        <a
-          className="contact-email reveal"
-          style={{ "--rd": "60ms" }}
-          href="mailto:algerdegdimaymay@gmail.com"
-        >
-          algerdegdimaymay@gmail.com
-        </a>
+    <section id="contact" className="contact">
+      <div className="reveal contact-eyebrow">
+        <span className="mark">$</span> contact
+      </div>
 
-        <dl className="contact-dl reveal" style={{ "--rd": "120ms" }}>
-          <div>
-            <dt>LinkedIn</dt>
-            <dd>
-              <a
-                href="https://linkedin.com/in/ken-alger-dimaymay"
-                target="_blank"
-                rel="noopener"
-              >
-                /ken-alger-dimaymay
-              </a>
-            </dd>
-          </div>
-          <div>
-            <dt>Phone</dt>
-            <dd>
-              <a href="tel:+639212662965" style={{ border: "none" }}>
-                +63 921 266 2965
-              </a>
-            </dd>
-          </div>
-          <div>
-            <dt>Location</dt>
-            <dd>Cebu City, Philippines</dd>
-          </div>
-          <div>
-            <dt>Status</dt>
-            <dd><span className="status-dot" />Open to freelance</dd>
-          </div>
-        </dl>
+      <a
+        href="mailto:algerdegdimaymay@gmail.com"
+        className="reveal contact-email ul"
+        style={{ "--rd": "60ms" }}
+      >
+        algerdegdimaymay@gmail.com
+      </a>
+
+      <div className="reveal contact-meta" style={{ "--rd": "120ms" }}>
+        <a
+          href="https://linkedin.com/in/ken-alger-dimaymay"
+          target="_blank"
+          rel="noopener"
+          className="ul"
+        >
+          LinkedIn ↗
+        </a>
+        <a href="tel:+639212662965" className="ul">
+          +63 921 266 2965
+        </a>
+        <span>Cebu City, PH</span>
+        <span className="contact-status">
+          <span className="dot" />
+          Open to freelance
+        </span>
       </div>
     </section>
   );

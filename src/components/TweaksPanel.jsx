@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 const PANEL_STYLE = `
   .twk-fab{position:fixed;right:18px;bottom:18px;z-index:2147483645;
     width:42px;height:42px;border-radius:999px;border:1px solid var(--line);
-    background:color-mix(in srgb, var(--paper) 82%, transparent);color:var(--ink);
+    background:color-mix(in srgb, var(--surface) 82%, transparent);color:var(--ink);
     backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 8px 28px rgba(0,0,0,.18);cursor:pointer;
@@ -100,8 +100,8 @@ export default function TweaksPanel({ t, setTweak }) {
               label="Appearance"
               value={t.mode}
               options={[
-                { value: "paper", label: "Paper" },
-                { value: "slate", label: "Slate" },
+                { value: "light", label: "Light" },
+                { value: "dark", label: "Dark" },
               ]}
               onChange={(v) => setTweak("mode", v)}
             />
@@ -110,10 +110,10 @@ export default function TweaksPanel({ t, setTweak }) {
               label="Theme"
               value={t.accent}
               options={[
-                { value: "forest", label: "Forest" },
-                { value: "rust", label: "Rust" },
-                { value: "indigo", label: "Indigo" },
+                { value: "blue", label: "Blue" },
+                { value: "red", label: "Red" },
                 { value: "ink", label: "Ink" },
+                { value: "green", label: "Green" },
               ]}
               onChange={(v) => setTweak("accent", v)}
             />

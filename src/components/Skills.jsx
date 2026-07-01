@@ -1,45 +1,40 @@
-const SKILLS = [
+const GROUPS = [
   {
-    name: "Front end",
-    desc:
-      "React, Next.js, Angular and React Native — responsive interfaces, NG-ZORRO component work, and TypeScript throughout.",
+    cat: "Frontend",
+    items: "React · Next.js · Angular · React Native · TypeScript · NG-ZORRO",
   },
   {
-    name: "Back end",
-    desc:
-      "ASP.NET Core Web APIs in C#, Node.js services, LINQ and SQL data work, and REST integrations.",
+    cat: "Backend",
+    items: "ASP.NET Core · C# · Node.js · LINQ · SQL · REST APIs",
   },
   {
-    name: "Systems & ERP",
-    desc:
-      "SAP ERP, inventory (MRIS, stock transfer), procurement, sales-order processing, manufacturing and CRM workflows.",
-  },
-  {
-    name: "How I work",
-    desc:
-      "Approval routing, fund tracking, performance tuning, and reporting with KPI dashboards.",
+    cat: "Systems & ERP",
+    items:
+      "SAP ERP · Inventory · Procurement · Sales Orders · Manufacturing · CRM",
   },
 ];
 
 export default function Skills() {
   return (
     <section id="skills" className="section">
-      <div className="section-inner">
-        <h2
-          className="section-title reveal"
-          style={{ marginBottom: "clamp(36px, 6vh, 64px)" }}
-        >
-          What I work with
-        </h2>
-
-        <div className="skills-grid">
-          {SKILLS.map((s, i) => (
-            <div key={s.name} className="skill reveal" style={{ "--rd": `${i * 60}ms` }}>
-              <h3>{s.name}</h3>
-              <p>{s.desc}</p>
-            </div>
-          ))}
+      <div className="reveal section-head">
+        <div className="eyebrow">
+          <span className="mark">//</span> stack
         </div>
+        <h2 className="section-title">What I work with</h2>
+      </div>
+
+      <div className="skills-list">
+        {GROUPS.map((g, i) => (
+          <div
+            key={g.cat}
+            className="reveal"
+            style={{ "--rd": `${i * 60}ms` }}
+          >
+            <div className="skill-cat">{g.cat}</div>
+            <div className="skill-items">{g.items}</div>
+          </div>
+        ))}
       </div>
     </section>
   );
