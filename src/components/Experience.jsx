@@ -9,13 +9,7 @@ const ENTRIES = [
     date: "JAN 2025 — PRESENT",
     role: "Web / Software Developer",
     org: "Myvan Holdings Inc.",
-    desc: "Built ERP modules and CRM web/mobile apps — approval routing, fund tracking, quotation generation, manufacturing and real-estate reservation workflows.",
-  },
-  {
-    date: "2025",
-    role: "Associate Developer — SAP ERP",
-    org: "Myvan Holdings Inc.",
-    desc: "Maintained Inventory Management (MRIS, Stock Transfer Slip), optimized Purchasing via LINQ and backend pagination, and improved Sales Order processing.",
+    desc: "Built ERP modules and CRM web/mobile apps — approval routing, fund tracking, quotation generation, manufacturing and real-estate reservation workflows. Also maintained SAP ERP Inventory Management (MRIS, Stock Transfer Slip), optimized Purchasing via LINQ and backend pagination, and improved Sales Order processing.",
   },
   {
     date: "GRADUATED DEC 2024",
