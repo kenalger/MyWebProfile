@@ -6,7 +6,6 @@ import Experience from "./components/Experience.jsx";
 import Skills from "./components/Skills.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
-import TweaksPanel from "./components/TweaksPanel.jsx";
 import { useTweaks } from "./hooks/useTweaks.js";
 import { useReveal } from "./hooks/useReveal.js";
 import { applyTheme } from "./theme.js";
@@ -27,7 +26,7 @@ export default function App() {
 
   return (
     <div className="page">
-      <Nav />
+      <Nav mode={t.mode} setTweak={setTweak} />
       <main>
         <Hero />
         <Work />
@@ -36,7 +35,6 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-      <TweaksPanel t={t} setTweak={setTweak} />
     </div>
   );
 }
